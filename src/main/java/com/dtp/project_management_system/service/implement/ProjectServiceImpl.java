@@ -18,14 +18,13 @@ import org.springframework.stereotype.Service;
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-    private final ProjectMapper projectMapper;
     private final TaskService taskService;
 
     @Override
     public ProjectHealthData getProjectHealthData(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
-        ProjectDTO projectDTO = projectMapper.toDto(project);
+        ProjectDTO projectDTO = ProjectMapper.INSTANCE.toDto(project);
         int teamSize = userRepository.findByProjectId(projectId).size();
 
         ProjectHealthData projectHealthData = new ProjectHealthData();
